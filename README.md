@@ -1,20 +1,45 @@
-# CommerceIQ
+# CommerceIQ — AI-Powered E-Commerce Database Assistant
 
-An AI-powered MySQL e-commerce data assistant using Claude and one read-only `query_database` tool.
+CommerceIQ is a Python-based AI assistant that enables users to query an e-commerce MySQL database using natural language.
 
-**Status:** Milestone 3 Claude API integration and CLI are in progress.
+Built with the **Claude API**, the project demonstrates LLM tool calling, multi-turn conversations, SQL validation, and secure database access.
 
-Read `PRD.md` for scope, `AGENTS.md` for Codex instructions, and `docs/DATABASE_SCHEMA.md` for the database contract.
+## Key Features
 
-## Current architecture
-The project is intentionally small:
+- **Natural Language Queries:** Ask business questions without writing SQL manually.
+- **LLM Tool Calling:** Claude generates SQL queries and invokes a Python database tool.
+- **Secure Database Access:** Read-only MySQL permissions and SQLGlot-based query validation.
+- **Multi-Turn Conversations:** Maintains conversation context across questions.
+- **Safety Controls:** Rejects unauthorized SQL operations and limits query execution.
+- **Automated Testing:** Includes tests for database operations, tool integration, and CLI behavior.
 
-- MySQL owns the four-table `commerceiq` dataset.
-- Python scripts create and seed the database.
-- The Python `query_database(sql_query: str)` function validates and executes safe read-only SQL.
-- The CLI wraps Claude's Messages API tool-use loop with exactly one registered tool.
+## Tech Stack
 
-The main security boundary is a dedicated MySQL account with `SELECT` only on the four allowlisted tables. The Python SQL validator adds a second fail-closed safety layer before any model-generated SQL reaches MySQL.
+- **Language:** Python
+- **AI:** Anthropic Claude API
+- **Database:** MySQL
+- **SQL Validation:** SQLGlot
+- **Testing:** pytest
+
+## How It Works
+
+1. The user asks a business question in natural language.
+2. Claude analyzes the question and generates a tool call.
+3. The `query_database()` function validates the SQL query.
+4. The validated query executes against the read-only MySQL database.
+5. The database returns structured results.
+6. Claude interprets the results and responds to the user.
+
+## Example Questions
+
+- What are the top 5 products by completed-order revenue?
+- Which customers have placed the most orders?
+- Which products are running low on stock?
+- What is the total completed revenue by month?
+
+## Project Purpose
+
+CommerceIQ explores how LLM-powered assistants can make structured business data accessible through natural-language interactions while maintaining controlled database access.
 
 ## Prerequisites
 1. Python 3.11+
